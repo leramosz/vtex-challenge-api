@@ -1,0 +1,20 @@
+{
+  "name": "node-easy-notes-app",
+  "version": "1.0.0",
+  "description": "node tutorial",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "tutorial"
+  ],
+  "author": "Leonardo Ramos",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.10"
+  }
+}
