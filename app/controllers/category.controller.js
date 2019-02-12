@@ -5,7 +5,7 @@ exports.create = (req, res) => {
     // Validate request
     if(!req.body.description) {
         return res.status(400).send({
-            message: "Category description can not be empty"
+            message: "Category description cannot be empty"
         });
     }
 
@@ -41,6 +41,7 @@ exports.findAll = (req, res) => {
 // Find a single category with a categoryId
 exports.findOne = (req, res) => {
     Category.findById(req.params.categoryId)
+    .populate({ path: 'movies', select: '_id title year image rating' }) 
     .then(category => {
         if(!category) {
             return res.status(404).send({

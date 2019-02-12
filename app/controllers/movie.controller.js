@@ -17,7 +17,8 @@ exports.create = (req, res) => {
         duration: req.body.duration,
         trailer: req.body.trailer,
         image: req.body.image,
-        rating: req.body.rating
+        rating: req.body.rating,
+        category: req.body.category
     });
 
     // Save movie in the database
@@ -46,6 +47,7 @@ exports.findAll = (req, res) => {
 // Find a single movie with a movieId
 exports.findOne = (req, res) => {
     Movie.findById(req.params.movieId)
+    .populate({ path: 'category', select: '_id title' })  
     .then(movie => {
         if(!movie) {
             return res.status(404).send({
