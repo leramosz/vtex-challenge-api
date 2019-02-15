@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 require('./app/routes/category.routes.js')(app);
 require('./app/routes/movie.routes.js')(app);
 require('./app/routes/user.routes.js')(app);
-
+require('./app/routes/review.routes.js')(app);
 
 // listen for requests
 app.listen(3000, () => {

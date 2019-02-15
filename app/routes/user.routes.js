@@ -4,6 +4,9 @@ module.exports = (app) => {
     // Create a new movie
     app.post('/users', user.create);
 
+    // Retrieve all user
+    app.get('/users', user.findAll);
+
     // Retrieve a single user with userId
     app.get('/users/:userId', user.findOne);
 

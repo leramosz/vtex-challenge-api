@@ -21,6 +21,18 @@ exports.create = (req, res) => {
     });
 };
 
+// Retrieve and return all users from the database.
+exports.findAll = (req, res) => {
+    User.find()
+    .then(user => {
+        res.send(user);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving users."
+        });
+    });
+};
+
 // Find a single user with a userId
 exports.findOne = (req, res) => {
     User.findById(req.params.userId)
@@ -113,5 +125,44 @@ exports.listFavorites = (req, res) => {
         return res.status(500).send({
             message: "Error retrieving user with id " + req.params.userId
         });
+    });
+};
+
+// Add review to user
+exports.addReview = (userId, reviewId) => {
+    User.findByIdAndUpdate(userId, { $push: { reviews: reviewId } }, { new: true })
+    .then(user => {
+       if(!user) {
+            console.log("User not found with id " + userId);
+            return;
+        }
+        console.log("user updated");
+        return;
+    }).catch(err => {
+       if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            console.log("User not found with id " + userId);
+            return;
+        }              
+        console.log("Could not delete user with id " + userId);
+        return;
+    });
+};
+
+// Delete review from user
+exports.deleteReview = (userId, reviewId) => {
+    User.findByIdAndUpdate(userId, { $pull: { reviews: reviewId } }, { new: true })
+    .then(user => {
+       if(!user) {
+            console.log("User not found with id " + userId);
+            return;
+        }
+        console.log("user updated");
+    }).catch(err => {
+       if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            console.log("User not found with id " + userId);
+            return;
+        }              
+        console.log("Could not delete user with id " + userId);
+        return;
     });
 };
