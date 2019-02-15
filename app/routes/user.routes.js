@@ -19,4 +19,7 @@ module.exports = (app) => {
     // List favorites from an user
     app.get('/users/:userId/favorites/movies', user.listFavorites);
 
+    // User login
+    app.post('/users/auth', user.auth);
+
 }

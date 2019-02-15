@@ -166,3 +166,36 @@ exports.deleteReview = (userId, reviewId) => {
         return;
     });
 };
+
+// User login
+exports.auth = (req, res) => {
+    User.findOne({ email: req.body.email })
+    .then(user => {
+        if(!user) {
+            return res.status(401).send({
+                message: "Wrong user/password"
+            });            
+        }
+        user.comparePassword(req.body.password, function(err, isMatch) {
+            if (err) throw err;
+            if (isMatch) {
+                res.send({ firstName: user.firstName, lastName: user.lastName, email: user.email});
+            }
+            else {
+                return res.status(401).send({
+                    message: "Wrong user/password"
+                });
+            }  
+        });
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(401).send({
+                message: "Wrong user/password"
+            });                
+        }
+        return res.status(500).send({
+            message: "Error loging in"
+        });
+    });
+};
+
