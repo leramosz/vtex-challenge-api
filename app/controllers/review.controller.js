@@ -2,7 +2,7 @@ const Review = require('../models/review.model.js');
 const movie = require('../controllers/movie.controller.js');
 const user = require('../controllers/user.controller.js');
 
-// Create and save a new review
+// Create and save a new review => authentication validated while calling the addReview method in Movie
 exports.create = (req) => {
     
     // Create a review
@@ -18,16 +18,16 @@ exports.create = (req) => {
     return review.save();
 };
 
-// Delete a review with the specified reviewId in the request
+// Delete a review with the specified reviewId in the request => authentication validated while calling the deleteReview method in Movie
 exports.delete = (reviewId, movieId) => {
     return Review.remove({ $and: [ { _id: { $eq: reviewId } }, { movie: { $eq: movieId } } ] });
 };
 
-// Retrieve and return all review from the database.
+// Retrieve and return all reviews from the database
 exports.findAll = (req, res) => {
     Review.find()
-    .then(review => {
-        res.send(review);
+    .then(reviews => {
+        res.send({ reviews: reviews, token: req.token});
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving reviews."

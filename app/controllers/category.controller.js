@@ -1,6 +1,6 @@
 const Category = require('../models/category.model.js');
 
-// Create and save a new category
+// Create and save a new category => authentication required
 exports.create = (req, res) => {
     // Validate request
     if(!req.body.description) {
@@ -17,8 +17,8 @@ exports.create = (req, res) => {
 
     // Save category in the database
     category.save()
-    .then(data => {
-        res.send(data);
+    .then(category => {
+        res.send({ category: category, token: req.token });
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the category."
@@ -26,11 +26,11 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve and return all categories from the database.
+// Retrieve and return all categories from the database => authentication required
 exports.findAll = (req, res) => {
     Category.find()
-    .then(Categories => {
-        res.send(Categories);
+    .then(categories => {
+        res.send({ categories: categories, token: req.token });
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving categories."
@@ -48,7 +48,7 @@ exports.findOne = (req, res) => {
                 message: "Category not found with id " + req.params.categoryId
             });            
         }
-        res.send(category);
+        res.send({ category: category, token: req.token });
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -61,7 +61,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a category identified by the categoryId in the request
+// Update a category identified by the categoryId in the request => authentication required
 exports.update = (req, res) => {
     // Validate Request
     if(!req.body.description) {
@@ -81,7 +81,7 @@ exports.update = (req, res) => {
                 message: "Category not found with id " + req.params.categoryId
             });
         }
-        res.send(category);
+        res.send({ category: category, token: req.token });
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -94,7 +94,7 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a category with the specified categoryId in the request
+// Delete a category with the specified categoryId in the request => authentication required
 exports.delete = (req, res) => {
     Category.findByIdAndRemove(req.params.categoryId)
     .then(category => {
@@ -103,7 +103,7 @@ exports.delete = (req, res) => {
                 message: "Category not found with id " + req.params.categoryId
             });
         }
-        res.send({message: "Category deleted successfully!"});
+        res.send({ message: "Category deleted successfully", token: req.token });
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({

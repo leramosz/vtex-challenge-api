@@ -1,5 +1,7 @@
 const Movie = require('../models/movie.model.js');
 const Review = require('../models/review.model.js');
+const jwt = require('jsonwebtoken');
+const config = require('../../config/config.js');
 const mongoose = require('mongoose'), 
 	  Schema = mongoose.Schema,
 	  bcrypt = require('bcrypt'),
@@ -43,5 +45,22 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
+
+UserSchema.statics.tokenCreate = function(userId) {
+    return jwt.sign({ id: userId }, config.secret, { expiresIn: 900 }); 
+}
+
+UserSchema.statics.verifyToken = function(req, res, next) {
+    const token = req.headers['x-access-token'];
+    if (!token) return res.status(401).send({ message: 'Not authorized' });
+    jwt.verify(token, config.secret, function(err, decoded) {
+        if (err) {
+            return res.status(401).send({ message: 'Not authorized' });
+        }
+        req.userId = decoded.id;
+        req.token = UserSchema.statics.tokenCreate(req.userId);
+        next();
+    });
+}
 
 module.exports = mongoose.model('User', UserSchema);	

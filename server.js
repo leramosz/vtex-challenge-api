@@ -11,13 +11,13 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Configuring the database
-const dbConfig = require('./config/db.config.js');
+const config = require('./config/config.js');
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(dbConfig.url, {
+mongoose.connect(config.dbUrl, {
     useNewUrlParser: true
 }).then(() => {
     console.log("Successfully connected to the database");    

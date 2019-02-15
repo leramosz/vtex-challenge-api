@@ -2,7 +2,7 @@ const Movie = require('../models/movie.model.js');
 const Review = require('../controllers/review.controller.js');
 const User = require('../controllers/user.controller.js');
 
-// Create and save a new movie
+// Create and save a new movie => authentication required
 exports.create = (req, res) => {
     // Validate request
     if(!req.body.description) {
@@ -25,8 +25,8 @@ exports.create = (req, res) => {
 
     // Save movie in the database
     movie.save()
-    .then(data => {
-        res.send(data);
+    .then(movie => {
+        res.send({ movie: movie, token: req.token });
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the movie."
@@ -34,11 +34,11 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve and return all movies from the database.
+// Retrieve and return all movies from the database => authentication required
 exports.findAll = (req, res) => {
     Movie.find()
     .then(movies => {
-        res.send(movies);
+        res.send({ movies: movies, token: req.token });
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving movies."
@@ -46,7 +46,7 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single movie with a movieId
+// Find a single movie with a movieId => authentication required
 exports.findOne = (req, res) => {
     Movie.findById(req.params.movieId)
     .populate({ path: 'category', select: '_id title' })  
@@ -56,7 +56,7 @@ exports.findOne = (req, res) => {
                 message: "Movie not found with id " + req.params.movieId
             });            
         }
-        res.send(movie);
+        res.send({ movie: movie, token: req.token });
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -69,7 +69,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a movie identified by the movieId in the request
+// Update a movie identified by the movieId in the request => authentication required
 exports.update = (req, res) => {
     // Validate Request
     if(!req.body.description) {
@@ -95,7 +95,7 @@ exports.update = (req, res) => {
                 message: "Movie not found with id " + req.params.movieId
             });
         }
-        res.send(movie);
+        res.send({ movie: movie, token: req.token });
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -108,7 +108,7 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a movie with the specified movieId in the request
+// Delete a movie with the specified movieId in the request => authentication required
 exports.delete = (req, res) => {
     Movie.findByIdAndRemove(req.params.movieId)
     .then(movie => {
@@ -117,7 +117,7 @@ exports.delete = (req, res) => {
                 message: "Movie not found with id " + req.params.movieId
             });
         }
-        res.send({message: "Movie deleted successfully!"});
+        res.send({ message: "Movie deleted successfully", token: req.token });
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
@@ -130,7 +130,7 @@ exports.delete = (req, res) => {
     });
 };
 
-// Add a review to a movie
+// Add a review to a movie => authentication required
 exports.addReview = (req, res) => {
 
     Movie.findById(req.params.movieId)
@@ -153,8 +153,8 @@ exports.addReview = (req, res) => {
                 }              
                 console.log("Could not delete movie with id " + req.params.movieId);
             });
-            User.addReview(req.body.user, review._id);
-            res.send(review);
+            User.addReview(req.userId, review._id);
+            res.send({ review: review, token: req.token });
         }).catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occurred"
@@ -173,7 +173,7 @@ exports.addReview = (req, res) => {
 
 };
 
-// Delete a review from a movie
+// Delete a review from a movie => authentication required
 exports.deleteReview = (req, res) => {
 
     Movie.findById(req.params.movieId)
@@ -205,8 +205,8 @@ exports.deleteReview = (req, res) => {
                 console.log("Could not delete movie with id " + req.params.movieId);
                 return;
             });
-            User.deleteReview(req.body.user, req.params.reviewId);
-            res.send({message: "Review deleted successfully!"});
+            User.deleteReview(req.userId, req.params.reviewId);
+            res.send({ message: "Review deleted successfully", token: req.token });
         }).catch(err => {
             if(err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({
