@@ -1,5 +1,5 @@
 {
-  "name": "vtex-challenge-api",
+  "name": "VTEX Challenge API",
   "version": "1.0.0",
   "description": "vtex-challenge-api",
   "main": "server.js",
@@ -8,7 +8,8 @@
   },
   "keywords": [
     "node",
-    "tutorial"
+    "api",
+    "vtex"
   ],
   "author": "Leonardo Ramos",
   "license": "MIT",
