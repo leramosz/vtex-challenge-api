@@ -1,14 +1,15 @@
 {
   "name": "VTEX Challenge API",
   "version": "1.0.0",
-  "description": "node tutorial",
+  "description": "vtex-challenge-api",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "keywords": [
     "node",
-    "tutorial"
+    "api",
+    "vtex"
   ],
   "author": "Leonardo Ramos",
   "license": "MIT",
@@ -16,6 +17,7 @@
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.10"
   }
 }
