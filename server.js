@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 // create express app
 const app = express();
 
-// user cors
+// use cors
 app.use(cors());
 
 // parse requests of content-type - application/x-www-form-urlencoded
