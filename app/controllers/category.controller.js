@@ -114,4 +114,88 @@ exports.delete = (req, res) => {
             message: "Could not delete category with id " + req.params.categoryId
         });
     });
-};
+ };
+
+ // Add movie to category
+ exports.addMovie = (req, res) => {
+
+    Movie.findById(req.body.movie)
+    .then(movie => {
+        if(!movie) {
+            return res.status(404).send({
+                message: "Movie not found with id " + req.body.movie
+            });
+        }
+        Category.findByIdAndUpdate(req.params.categoryId, 
+            { $push: { movies: req.body.movie} }, 
+            { new: true })
+        .then(category => {
+            if(!category) {
+                return res.status(404).send({
+                    message: "Category not found with id " + req.params.categoryId
+                });
+            }
+            res.send(category: category, token: req.token);
+        }).catch(err => {
+            if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+                return res.status(404).send({
+                    message: "Category not found with id " + req.params.categoryId
+                });                
+            }
+            return res.status(500).send({
+                message: "Could not add movie to category with id " + req.params.categoryId
+            });
+        });
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Movie not found with id " + req.body.movie
+            });               
+        }
+        return res.status(500).send({
+            message: err.message || "Some error occurred"
+        });
+    });
+ };
+
+ // Delete movie from category
+ exports.deleteMovie = (req, res) => {
+
+    Movie.findById(req.params.movieId)
+    .then(movie => {
+        if(!movie) {
+            return res.status(404).send({
+                message: "Movie not found with id " + req.params.movieId
+            });
+        }
+        Category.findByIdAndUpdate(req.params.categoryId, 
+            { $pull: { movies: req.params.movieId} }, 
+            { new: true })
+        .then(category => {
+            if(!category) {
+                return res.status(404).send({
+                    message: "Category not found with id " + req.params.categoryId
+                });
+            }
+            res.send( { category: category, token: req.token });
+        }).catch(err => {
+            if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+                return res.status(404).send({
+                    message: "Category not found with id " + req.params.categoryId
+                });                
+            }
+            return res.status(500).send({
+                message: "Could not add movie to category with id " + req.params.categoryId
+            });
+        });
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Movie not found with id " + req.params.movieId
+            });               
+        }
+        return res.status(500).send({
+            message: err.message || "Some error occurred"
+        });
+    });
+ };

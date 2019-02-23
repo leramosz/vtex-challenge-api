@@ -16,4 +16,10 @@ module.exports = (app) => {
 
     // Delete a category with categoryId
     app.delete('/categories/:categoryId', user.verifyAccess, category.delete);
+
+    // Add movie to category
+    app.post('/categories/:categoryId/movies', user.verifyAccess, category.addMovie);
+
+    // Delete movie from category
+    app.delete('/categories/:categoryId/movies/:movieId', user.verifyAccess, category.deleteMovie);
 }
