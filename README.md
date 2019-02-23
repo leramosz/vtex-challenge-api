@@ -17,10 +17,10 @@ Automated tests were implementing using the following technologies:
 
 This repository contains two different versions of the same API. They were committed to different branches:
 
-- master: it containts a simple API that implements a basic CRUD to manage information for movies and movie categories. The 
+- master: it contains a simple API that implements a basic CRUD to manage information for movies and movie categories. The 
 automated tests were created only for this version.
 
-- auth/jwt: it containts a much elaborated API that, addionally to the CRUD for movies and movie categories, it implements user
+- auth/jwt: it contains a much elaborated API that, addionally to the CRUD for movies and movie categories, it implements user
 management, adding/deleting favorite movies to/from an user and adding/deleting reviews to/from a movie. It also implements a 
 JWT token based authentication/authorization.
 
