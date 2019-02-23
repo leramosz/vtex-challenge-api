@@ -1,4 +1,6 @@
 const Category = require('../models/category.model.js');
+const Movie = require('../models/movie.model.js');
+
 
 // Create and save a new category => authentication required
 exports.create = (req, res) => {
@@ -135,7 +137,7 @@ exports.delete = (req, res) => {
                     message: "Category not found with id " + req.params.categoryId
                 });
             }
-            res.send(category: category, token: req.token);
+            res.send({ category: category, token: req.token });
         }).catch(err => {
             if(err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({
@@ -177,7 +179,7 @@ exports.delete = (req, res) => {
                     message: "Category not found with id " + req.params.categoryId
                 });
             }
-            res.send( { category: category, token: req.token });
+            res.send({ category: category, token: req.token });
         }).catch(err => {
             if(err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({
