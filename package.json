@@ -4,7 +4,8 @@
   "description": "vtex-challenge-api",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha app/test/*.js --timeout 10000"
   },
   "keywords": [
     "node",
@@ -16,9 +17,12 @@
   "dependencies": {
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
+    "mocha": "^6.0.1",
     "mongoose": "^5.4.10"
   }
 }

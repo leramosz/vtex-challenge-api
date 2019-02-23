@@ -17,10 +17,4 @@ module.exports = (app) => {
     // Delete a movie with movieId
     app.delete('/movies/:movieId', movie.delete);
 
-    // Add review to movie
-    app.post('/movies/:movieId/reviews', movie.addReview);
-
-    // Delete review from movie
-    app.delete('/movies/:movieId/reviews/:reviewId', movie.deleteReview);
-
 }
