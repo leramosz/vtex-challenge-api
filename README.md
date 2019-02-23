@@ -66,7 +66,7 @@ The Schema for the movie is the following:
 
 The available endpoints in this version are the following:
 
-### Category
+#### Category
 
 - POST /categories => create a new category
 - GET /categories => retrieve all categories
